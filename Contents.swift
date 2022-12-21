@@ -51,41 +51,46 @@ import UIKit
 
 // Bài 1:
 // ???: Version không phải verson
-func checkUpdate(currentVersion: String, verson: String?) {
+func checkUpdate(currentVersion: String, version: String?) {
 
     // FIXME: Dùng if let hoặc guard let
-    if verson == nil || verson == "" {
+    guard let version = version else {
+        print("Không có phiên bản nào khác")
+        return
+    }
+    if version == "" {
         print("Không có phiên bản nào khác")
     } else {
         var currentVersonNew = currentVersion.components(separatedBy: ".")
         // FIXME: Dùng if let xong thì bỏ force optional đi, không nên dùng
-        var versonNew = verson!.components(separatedBy: ".")
-        var ii = 0
-        var jj = 0
-        var result1 = 0
+        var versionNew = version.components(separatedBy: ".")
+        var currentVersionInt = 0
+        var versionInt = 0
+        var result = 0
         for i in currentVersonNew {
             // FIXME: Cấm force kiểu này
-            ii = Int(i)!
+            currentVersionInt = (Int(i) ?? 0)
             // ???: Chưa hiểu logic chỗ này lắm, em mổ tả kỹ nhé
-            for j in versonNew {
-                jj = Int(j)!
+            // Sau khi lấy được các phần tử của mảng currentVersionNew và versionNew thì em sẽ ép kiểu từ String -> Int rồi em lấy từng phần tử currentVersionInt trừ cho từng phần tử versionInt . sau đó em sẽ biết được là nếu kết quả bằng nhau thì là cùng version, nếu kết quả > 0 thì là version cũ, nếu kết quả < 0 thì là version mới update
+            for j in versionNew {
+                versionInt = (Int(j) ?? 0)
             }
             // FIXME: Chú ý format code cho đúng
-           result1 = ii - jj
-            print(result1)
+            result = currentVersionInt - versionInt
+            print(result)
         }
-        if result1 == 0 {
-            print("\(verson!) Cùng phiên bản")
+        if result == 0 {
+            print("\(version) Cùng phiên bản")
+        } else if result > 0 {
+            
+            print("\(version) là bản cũ hơn")
+            
         } else {
-            if result1 > 0 {
-                print("\(verson!) là bản cũ hơn")
-            } else if result1 < 0 {
-                print("\(verson!) là bản mới update")
-            }
+            print("\(version) là bản mới update")
         }
     }
 }
-checkUpdate(currentVersion: "1.0.0", verson: "1.0.1")
+checkUpdate(currentVersion: "1.0.0", version: "1.0.1")
 
 //extension String{
 //    func checkUpdate(_ currentVersion: String?) -> ComparisonResult {
@@ -126,86 +131,79 @@ checkUpdate(currentVersion: "1.0.0", verson: "1.0.1")
 //}
 
 // Bài 2:
-var string = ["Lương 10000k", "Làm thêm 20000k", "Mẹ cho 1000k", "Mua gạo 200k", "Mua muối 10k", "Đi ăn nướng 500k", "Ăn lẩu 300k", "Uống trà sữa 100k", "Caffee 60k", "Cho Hoàng mượn 500k", "Cho Cường mượn 600k", "Đi chợ 400k", "Đi siêu thị 900k"]
+var spendingList = ["Lương 10000k", "Làm thêm 20000k", "Mẹ cho 1000k", "Mua gạo 200k", "Mua muối 10k", "Đi ăn nướng 500k", "Ăn lẩu 300k", "Uống trà sữa 100k", "Caffee 60k", "Cho Hoàng mượn 500k", "Cho Cường mượn 600k", "Đi chợ 400k", "Đi siêu thị 900k"]
 var tongThu: Int = 0
 var tongChi: Int = 0
-var strin = ""
 func tinhTongThu(str: String) {
     // FIXME: Đặt tên biến chả có chút ý nghĩa gì hết vậy em? sửa lại nhé
     var deleteSpace = str.split(separator: " ")
-    var ss = deleteSpace.last
-    var cc = ss?.split(separator: "k")
-    var strcc = "\(cc?.first ?? "")"
-    var int = Int(strcc)
+    var lastStr = deleteSpace.last
+    var deleteLast = lastStr?.split(separator: "k")
+    var strInt = "\(deleteLast?.first ?? "")"
+    var int = Int(strInt)
     tongThu += (int ?? 0) * 1000
     print("Tổng thu nhập: \(tongThu)đ")
 }
 func tinhTongChi(str: String) {
     var deleteSpace = str.split(separator: " ")
-    var ss = deleteSpace.last
-    var cc = ss?.split(separator: "k")
-    var strcc = "\(cc?.first ?? "")"
-    var int = Int(strcc)
+    var lastStr = deleteSpace.last
+    var deleteLast = lastStr?.split(separator: "k")
+    var strInt = "\(deleteLast?.first ?? "")"
+    var int = Int(strInt)
     tongChi += (int ?? 0) * 1000
     print("Tổng chi tiêu: \(tongChi)đ")
 }
 func tessCase(string: [String]) {
     // ???: Chỗ này sao không dùng i luôn mà lại phải dùng một biến ngoài?
+    // chỗ này em không nghĩ rằng i có thể chấm contains được
     for i in string {
-        if strin.contains("Lương") || strin.contains("Mẹ cho") || strin.contains("Làm thêm") {
-            strin = i
-            print("\(strin) là thu nhập")
-            tinhTongThu(str: strin)
+        if i.contains("Lương") || i.contains("Mẹ cho") || i.contains("Làm thêm") {
+            print("\(i) là thu nhập")
+            tinhTongThu(str: i)
         } else {
-            strin = i
-            print("\(strin) là chi tiêu")
-            tinhTongChi(str: strin)
+            print("\(i) là chi tiêu")
+            tinhTongChi(str: i)
         }
     }
 }
-tessCase(string: string)
+tessCase(string: spendingList)
 
-let dong1 = ["\n| Thu nhập", " |", "\(tongThu)đ", "|"]
+let dong1 = ["\n| Thu nhập", " |", "", "|"]
 let dong2 = ["\n| Chi tiêu", " |", "\(tongChi)đ", "|"]
-let dong3 = ["\n| Con lại", " |", "1đ", "|"]
-var sentence = ""
+let dong3 = ["\n| Con lại", " |", "\(tongThu - tongChi)đ", "|"]
+var table = ""
 
 // ???: length=11, bỏ đi chữ đ là còn 10, max là được bao nhiêu? Ngoài ra em còn chưa format tongThu & tongChi
+// Max là được 11
 for i in dong1 {
-    sentence += i.padding(toLength: 11, withPad: " ", startingAt: 0)
+    table += i.padding(toLength: 11, withPad: " ", startingAt: 0)
 }
 for i in dong2 {
-    sentence += i.padding(toLength: 11, withPad: " ", startingAt: 0)
+    table += i.padding(toLength: 11, withPad: " ", startingAt: 0)
 }
 for i in dong3 {
-    sentence += i.padding(toLength: 11, withPad: " ", startingAt: 0)
+    table += i.padding(toLength: 11, withPad: " ", startingAt: 0)
 }
-print(sentence)
-//var rong = 4
-//var dai = 10
-//
-//for i in 0..<rong {
-//    for j in 0..<dai {
-//        if i == 0 || i == rong - 1 || j == 0 || j == dai - 1 {
-//            print("_", terminator: "")
-//        } else {
-//            print("*", terminator: "")
-//        }
-//
-//    }
-//    print("\(i + 1)")
-//    print()
-//}
-//print()
-//func formattedString(left: String, right: String, left1: String, width: Int = 12) -> String {
-//
-//      let filler = String(repeating: " ", count: max(0, width - left.count))
-//      return left + filler + right + filler + left1
-//}
-//
-//let result = formattedString(left: "| Thu nhập | ", right: "\(tongThu)đ", left1: " |") + "\n" + formattedString(left: "| Chi tiêu | ", right: "\(tongChi)đ", left1: " |") + "\n" + formattedString(left: "| Còn lại  | ", right: "1đ", left1: "  |")
-//
-//print(result)
+print(table)
+
+func formattedString(left: String, right: String, left1: String, width: Int = 13) -> String {
+
+      let filler = String(repeating: " ", count: max(0, width - left.count))
+      return left + filler + right + filler + left1
+}
+
+let dong11 = formattedString(left: "| Thu nhập |",
+                right: " \(tongThu)đ",
+                left1: " |")
+let dong12 = formattedString(left: "| Chi tiêu | ",
+                             right: "\(tongChi)đ",
+                             left1: " |")
+let dong33 = formattedString(left: "| Còn lại  | ",
+                             right: "1đ",
+                             left1: "  |")
+let result2 = dong11 + "\n" + dong12 + "\n" + dong33
+
+print(result2)
 
 // Bài 3:
 // FIXME: Xuống dòng theo từ em nhé, hiện tại em đang cắt luôn từ ra, như vậy là chưa đúng yêu cầu đâu
@@ -227,27 +225,21 @@ extension String {
 }
 var stringB3 = "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of de Finibus Bonorum et Malorum (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32."
 
-//while numberStr < string.count - 80 {
-//    numberStr = numberStr + 81
-//    while string[numberStr]
-//    string[numberStr] = "\n"
-//}
-
 func numberString(charsPerLine: Int, _ str: String) -> String {
-    var st = ""
+    var string = str
     var idx = 0
-    for char in str {
-        st += "\(char)"
-        idx = idx + 1
-        if idx == charsPerLine {
-            st += " \n"
-            idx = 0
+    while idx < string.count - charsPerLine {
+        idx += (charsPerLine + 1)
+        while string[idx] != " " {
+            idx += 1
         }
+        string[idx] = "\n"
     }
-    return st
+    return string
 }
 var newString = numberString(charsPerLine: 50, stringB3)
-var str = newString.split(separator: " \n")
+
+var str = newString.split(separator: "\n")
 var arrString = [String]()
 for i in stride(from: 0, to: str.count, by: 1) {
     arrString.append(str[i].trimmingCharacters(in: .whitespacesAndNewlines))
