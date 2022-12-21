@@ -50,21 +50,27 @@ import UIKit
 //*
 
 // Bài 1:
+// ???: Version không phải verson
 func checkUpdate(currentVersion: String, verson: String?) {
 
+    // FIXME: Dùng if let hoặc guard let
     if verson == nil || verson == "" {
         print("Không có phiên bản nào khác")
     } else {
         var currentVersonNew = currentVersion.components(separatedBy: ".")
+        // FIXME: Dùng if let xong thì bỏ force optional đi, không nên dùng
         var versonNew = verson!.components(separatedBy: ".")
         var ii = 0
         var jj = 0
         var result1 = 0
         for i in currentVersonNew {
+            // FIXME: Cấm force kiểu này
             ii = Int(i)!
+            // ???: Chưa hiểu logic chỗ này lắm, em mổ tả kỹ nhé
             for j in versonNew {
                 jj = Int(j)!
             }
+            // FIXME: Chú ý format code cho đúng
            result1 = ii - jj
             print(result1)
         }
@@ -125,6 +131,7 @@ var tongThu: Int = 0
 var tongChi: Int = 0
 var strin = ""
 func tinhTongThu(str: String) {
+    // FIXME: Đặt tên biến chả có chút ý nghĩa gì hết vậy em? sửa lại nhé
     var deleteSpace = str.split(separator: " ")
     var ss = deleteSpace.last
     var cc = ss?.split(separator: "k")
@@ -143,7 +150,7 @@ func tinhTongChi(str: String) {
     print("Tổng chi tiêu: \(tongChi)đ")
 }
 func tessCase(string: [String]) {
-
+    // ???: Chỗ này sao không dùng i luôn mà lại phải dùng một biến ngoài?
     for i in string {
         if strin.contains("Lương") || strin.contains("Mẹ cho") || strin.contains("Làm thêm") {
             strin = i
@@ -163,6 +170,7 @@ let dong2 = ["\n| Chi tiêu", " |", "\(tongChi)đ", "|"]
 let dong3 = ["\n| Con lại", " |", "1đ", "|"]
 var sentence = ""
 
+// ???: length=11, bỏ đi chữ đ là còn 10, max là được bao nhiêu? Ngoài ra em còn chưa format tongThu & tongChi
 for i in dong1 {
     sentence += i.padding(toLength: 11, withPad: " ", startingAt: 0)
 }
@@ -200,6 +208,7 @@ print(sentence)
 //print(result)
 
 // Bài 3:
+// FIXME: Xuống dòng theo từ em nhé, hiện tại em đang cắt luôn từ ra, như vậy là chưa đúng yêu cầu đâu
 extension String {
     subscript (_ index: Int) -> String {
 
